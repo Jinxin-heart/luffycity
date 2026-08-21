@@ -88,12 +88,54 @@ DATABASES = {
         'PASSWORD': 'luffycity',
         'OPTIONS': {
             'charset': 'utf8mb4',  # 连接选项配置,mysql8.0以上无需配置
+            # 'ssl': None,
+            'ssl_disabled': True,
         },
         'POOL_OPTIONS': {  # 连接池的配置信息
             'POOL_SIZE': 10,  # 连接池默认创建的链接对象的数量
             'MAX_OVERFLOW': 10  # 连接池默认创建的链接对象的最大数量
         }
-    }}
+    }
+}
+
+# redis configration
+# 设置redis缓存
+CACHES = {
+    # 默认缓存
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        # 项目上线时,需要调整这里的路径
+        # "LOCATION": "redis://:密码@IP地址:端口/库编号",
+        "LOCATION": "redis://:@127.0.0.1:6379/0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "CONNECTION_POOL_KWARGS": {"max_connections": 100},
+        }
+    },
+    # 提供给admin运营站点的session存储
+    "session": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://:@127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "CONNECTION_POOL_KWARGS": {"max_connections": 100},
+        }
+    },
+    # 提供存储短信验证码
+    "sms_code":{
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://:@127.0.0.1:6379/2",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "CONNECTION_POOL_KWARGS": {"max_connections": 100},
+        }
+    }
+}
+
+# 设置用户登录admin站点时,记录登录状态的session保存到redis缓存中
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+# 设置session保存的位置对应的缓存配置项
+SESSION_CACHE_ALIAS = "session"
 
 
 # Password validation
