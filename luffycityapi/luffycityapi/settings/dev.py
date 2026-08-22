@@ -26,7 +26,9 @@ SECRET_KEY = 'django-insecure-@i)a_4%tev#y$kr7t1$7wih(fkp!@%@cm9mng&hhc%c$i7*b^=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "api.luffycity.cn",
+]
 
 
 # Application definition
