@@ -256,19 +256,19 @@
       <div class="g-banner-content"  @mouseover="state.current_menu=-1">
         <el-carousel :interval="5000" arrow="always" height="482px">
           <el-carousel-item>
-            <img src="http://fuguangapi.oss-cn-beijing.aliyuncs.com/1.jpg" alt="" style="width: 100%;height: 100%;">
+            <img src="../assets/1.jpg" alt="" style="width: 100%;height: 100%;">
           </el-carousel-item>
           <el-carousel-item>
-            <img src="http://fuguangapi.oss-cn-beijing.aliyuncs.com/2.jpg" alt="" style="width: 100%;height: 100%;">
+            <img src="../assets/2.jpg" alt="" style="width: 100%;height: 100%;">
           </el-carousel-item>
           <el-carousel-item>
-            <img src="http://fuguangapi.oss-cn-beijing.aliyuncs.com/3.jpg" alt="" style="width: 100%;height: 100%;">
+            <img src="../assets/3.jpg" alt="" style="width: 100%;height: 100%;">
           </el-carousel-item>
           <el-carousel-item>
-            <img src="http://fuguangapi.oss-cn-beijing.aliyuncs.com/4.jpg" alt="" style="width: 100%;height: 100%;">
+            <img src="../assets/4.jpg" alt="" style="width: 100%;height: 100%;">
           </el-carousel-item>
           <el-carousel-item>
-            <img src="http://fuguangapi.oss-cn-beijing.aliyuncs.com/5.jpg" alt="" style="width: 100%;height: 100%;">
+            <img src="../assets/5.jpg" alt="" style="width: 100%;height: 100%;">
           </el-carousel-item>
         </el-carousel>
      </div>
