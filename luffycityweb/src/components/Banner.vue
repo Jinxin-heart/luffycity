@@ -254,21 +254,28 @@
      </div>
       <!-- 轮播图-->
       <div class="g-banner-content"  @mouseover="state.current_menu=-1">
-        <el-carousel :interval="5000" arrow="always" height="482px">
-          <el-carousel-item>
-            <img src="../assets/1.jpg" alt="" style="width: 100%;height: 100%;">
-          </el-carousel-item>
-          <el-carousel-item>
-            <img src="../assets/2.jpg" alt="" style="width: 100%;height: 100%;">
-          </el-carousel-item>
-          <el-carousel-item>
-            <img src="../assets/3.jpg" alt="" style="width: 100%;height: 100%;">
-          </el-carousel-item>
-          <el-carousel-item>
-            <img src="../assets/4.jpg" alt="" style="width: 100%;height: 100%;">
-          </el-carousel-item>
-          <el-carousel-item>
-            <img src="../assets/5.jpg" alt="" style="width: 100%;height: 100%;">
+        <el-carousel :interval="5000" arrow="always" height="482px" v-if="banner.banner_list[0]">
+          <el-carousel-item v-for="item, key in banner.banner_list", :key="key">
+            <a :href="item.link" v-if="item.is_http">
+              <img :src="item.image" alt="" style="width: 100%;height: 100%;">
+            </a>
+            <router-link :to="item.link" v-else>
+              <img :src="item.image" alt="" style="width: 100%;height: 100%;">
+            </router-link>
+
+<!--            <img src="../assets/1.jpg" alt="" style="width: 100%;height: 100%;">-->
+<!--          </el-carousel-item>-->
+<!--          <el-carousel-item>-->
+<!--            <img src="../assets/2.jpg" alt="" style="width: 100%;height: 100%;">-->
+<!--          </el-carousel-item>-->
+<!--          <el-carousel-item>-->
+<!--            <img src="../assets/3.jpg" alt="" style="width: 100%;height: 100%;">-->
+<!--          </el-carousel-item>-->
+<!--          <el-carousel-item>-->
+<!--            <img src="../assets/4.jpg" alt="" style="width: 100%;height: 100%;">-->
+<!--          </el-carousel-item>-->
+<!--          <el-carousel-item>-->
+<!--            <img src="../assets/5.jpg" alt="" style="width: 100%;height: 100%;">-->
           </el-carousel-item>
         </el-carousel>
      </div>
@@ -278,6 +285,12 @@
 
 <script setup>
 import {reactive} from "vue"
+import banner from "../api/banner.js";
+
+banner.get_banner_list().then(response => {
+  banner.banner_list = response.data
+})
+
 const state = reactive({
   current_menu: -1,
 })
