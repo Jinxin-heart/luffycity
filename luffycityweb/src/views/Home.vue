@@ -1,7 +1,9 @@
 <script setup>
 import Header from "../components/Header.vue";
 import Footer from "../components/Footer.vue";
-import http from "../utils/http.js";
+import Banner from "../components/Banner.vue";
+
+// import http from "../utils/http.js";
 
 /*
 // 测试CORS的跨域配置是否有问题
@@ -14,9 +16,9 @@ http.get("http://api.luffycity.cn:8000/home/test").then(response=>{
 })
 */
 
-http.get("/home/test").then(response => {
-  console.log(response.data);
-})
+// http.get("/home/test").then(response => {
+//   console.log(response.data);
+// })
 
 
 </script>
@@ -24,6 +26,9 @@ http.get("/home/test").then(response => {
 <template>
   <div class="home">
     <Header></Header>
+      <div id="main">
+        <Banner></Banner>
+      </div>
     <Footer></Footer>
   </div>
 </template>
