@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'home',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -147,7 +148,6 @@ CACHES = {
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 # 设置session保存的位置对应的缓存配置项
 SESSION_CACHE_ALIAS = "session"
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -266,4 +266,6 @@ REST_FRAMEWORK = {
     # 自定义异常处理
     "EXCEPTION_HANDLER": "luffycityapi.utils.exceptions.custom_exception_handler",
 }
+
+AUTH_USER_MODEL = 'users.User'
 
