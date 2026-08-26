@@ -265,7 +265,24 @@ LOGGING = {
 REST_FRAMEWORK = {
     # 自定义异常处理
     "EXCEPTION_HANDLER": "luffycityapi.utils.exceptions.custom_exception_handler",
+    # 自定义认证
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',  # jwt认证
+        'rest_framework.authentication.SessionAuthentication',  # session认证
+        'rest_framework.authentication.BasicAuthentication',
+    ),
 }
 
+import datetime
+# jwt认证相关配置项
+JWT_AUTH = {
+    # 设置jwt的有效期
+    # 如果内部站点，例如：运维开发系统，OA，往往配置的access_token有效期基本就是15分钟，30分钟，1~2个小时
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(weeks=1), # 一周有效，
+}
+
+
+
 AUTH_USER_MODEL = 'users.User'
+
 
