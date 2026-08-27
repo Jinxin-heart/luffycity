@@ -1,5 +1,12 @@
 <script setup>
 import Login from "../components/Login.vue"
+import router from "../router";
+
+const login_success = ()=>{
+  // 跳转到首页
+  router.push("/");
+}
+
 </script>
 
 <template>
@@ -11,7 +18,7 @@ import Login from "../components/Login.vue"
 				<p>帮助有志向的年轻人通过努力学习获得体面的工作和生活!</p>
 			</div>
       <div class="login_box">
-          <Login></Login>
+          <Login @successhandle="login_success"></Login>
       </div>
 		</div>
 	</div></template>
