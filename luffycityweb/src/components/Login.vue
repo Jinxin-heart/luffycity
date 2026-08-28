@@ -24,12 +24,16 @@
     <button class="login_btn">登录</button>
     <p class="go_login" >没有账号 <span>立即注册</span></p>
   </div>
+
 </template>
 
 <script setup>
 import user from "../api/user";
 import { ElMessage } from 'element-plus'
 const emit = defineEmits(["successhandle",])
+
+import {useStore} from "vuex"
+const store = useStore()
 
 // 登录处理
 const loginhandler = ()=>{
@@ -43,9 +47,10 @@ const loginhandler = ()=>{
 
   // 登录请求处理
   user.login().then(response=>{
+    // 保存token，并根据用户的选择，是否记住密码
     localStorage.removeItem("token");
     sessionStorage.removeItem("token");
-    console.log(response.data.token);
+    // console.log(response.data.token);
     if(user.remember){ // 判断是否记住登录状态
       // 记住登录
       localStorage.setItem("token", response.data.token);
@@ -54,9 +59,15 @@ const loginhandler = ()=>{
       // 不记住登录，关闭浏览器以后就删除状态
       sessionStorage.setItem("token", response.data.token);
       console.log("已写入 sessionStorage");
-
     }
-    // 保存token，并根据用户的选择，是否记住密码
+
+    // vuex存储用户登录信息，保存token，并根据用户的选择，是否记住密码
+    let payload = response.data.token.split(".")[1]  // 载荷
+    let payload_data = JSON.parse(atob(payload)) // 用户信息
+    console.log(payload_data)
+    store.commit("login", payload_data)
+
+
     // 成功提示
     console.log("登录成功！");
     ElMessage.success("登录成功！");
