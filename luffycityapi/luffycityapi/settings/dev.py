@@ -288,3 +288,5 @@ JWT_AUTH = {
 AUTH_USER_MODEL = 'users.User'
 
 
+# django自定义认证
+AUTHENTICATION_BACKENDS = ['luffycityapi.utils.authenticate.CustomAuthBackend', ]
