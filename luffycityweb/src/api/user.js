@@ -8,7 +8,7 @@ const user = reactive({
     remember: false, // 是否记住登录状态
     mobile: "",      // 登录手机号码
     code: "",        // 短信验证码
-    login(){
+    login(res){
         // 用户登录
         return http.post("/users/login/", {
             "username": this.account,
