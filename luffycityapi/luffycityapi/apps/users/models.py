@@ -1,4 +1,3 @@
-from django.core.validators import validate_comma_separated_integer_list
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -16,3 +15,4 @@ class User(AbstractUser):
         db_table = 'lf_users'
         verbose_name = '用户信息'
         verbose_name_plural = verbose_name
+

@@ -7,6 +7,7 @@ const user = reactive({
     password: "", // 登录密码
     remember: false, // 是否记住登录状态
     re_password: "",// 确认密码
+    code: "", // 短信验证码
     login(res){
         // 用户登录
         return http.post("/users/login/", {
@@ -19,6 +20,14 @@ const user = reactive({
     check_mobile(){
         // 验证手机号
         return http.get(`/users/mobile/${this.mobile}/`)
+    },
+    register(data){
+        data.mobile = this.mobile
+        data.re_password = this.re_password
+        data.password = this.password
+        data.sms_code = this.code
+        // 用户注册请求
+        return http.post("/users/register/", data)
     }
 })
 

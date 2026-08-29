@@ -11,3 +11,6 @@ NAV_FOOTER_SIZE = 10
 BANNER_SIZE = 10
 # 列表页数据的缓存周期，单位：秒
 LIST_PAGE_CACHE_TIME = 24 * 60 * 60
+# 默认头像
+DEFAULT_USER_AVATAR = "avatar/2022/avatar.jpg"
+# 手动在uploads下创建avatar/2021/并把客户端的头像保存到该目录下。
