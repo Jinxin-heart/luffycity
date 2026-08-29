@@ -32,6 +32,7 @@ import user from "../api/user";
 import { ElMessage } from 'element-plus'
 import "../utils/TJCaptcha.js"
 const emit = defineEmits(["successhandle",])
+import settings from "../settings";
 
 import {useStore} from "vuex"
 const store = useStore()
@@ -39,7 +40,7 @@ const store = useStore()
 // 显示验证码
 const show_captcha = ()=>{
   // 193891059 腾讯云验证码管理创建获取
-  var captcha1 = new TencentCaptcha('193891059', (res)=>{
+  var captcha1 = new TencentCaptcha(settings.captcha_app_id, (res)=>{
       // 接收验证结果的回调函数
       /* res（验证成功） = {ret: 0, ticket: "String", randstr: "String"}
          res（客户端出现异常错误 仍返回可用票据） = {ret: 0, ticket: "String", randstr: "String", errorCode: Number, errorMessage: "String"}
