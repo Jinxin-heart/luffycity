@@ -1,9 +1,9 @@
-from django.urls import path
-from rest_framework_jwt.views import obtain_jwt_token
+from django.urls import path, re_path
 from . import views
 
 urlpatterns = [
     path("login/", views.LoginAPIView.as_view(), name="login"),
+    re_path(r"^mobile/(?P<mobile>1[3-9]\d{9})/$", views.MobileAPIView.as_view()),
 ]
 
 # obtain_jwt_token实际上就是 rest_framework_jwt.views.ObtainJSONWebToken.as_view()
