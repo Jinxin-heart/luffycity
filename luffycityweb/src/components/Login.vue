@@ -29,83 +29,76 @@
 
 <script setup>
 import user from "../api/user";
-import {ElMessage} from 'element-plus'
+import { ElMessage } from 'element-plus'
 import "../utils/TJCaptcha.js"
-
 const emit = defineEmits(["successhandle",])
 
 import {useStore} from "vuex"
-
 const store = useStore()
 
-const show_captcha = () => {
+// 显示验证码
+const show_captcha = ()=>{
   // 193891059 腾讯云验证码管理创建获取
-  var captcha1 = new TencentCaptcha('193891059', (res) => {
-    // 接收验证结果的回调函数
-    /* res（验证成功） = {ret: 0, ticket: "String", randstr: "String"}
-       res（客户端出现异常错误 仍返回可用票据） = {ret: 0, ticket: "String", randstr: "String", errorCode: Number, errorMessage: "String"}
-       res（用户主动关闭验证码）= {ret: 2}
-    */
-    console.log(res);
-    // 调用登录处理
-    loginhandler(res);
+  var captcha1 = new TencentCaptcha('193891059', (res)=>{
+      // 接收验证结果的回调函数
+      /* res（验证成功） = {ret: 0, ticket: "String", randstr: "String"}
+         res（客户端出现异常错误 仍返回可用票据） = {ret: 0, ticket: "String", randstr: "String", errorCode: Number, errorMessage: "String"}
+         res（用户主动关闭验证码）= {ret: 2}
+      */
+      console.log(res);
+      // 调用登录处理
+      loginhandler(res);
   });
   captcha1.show(); // 显示验证码
 }
 
 // 登录处理
-const loginhandler = () => {
+const loginhandler = (res)=>{
   // 验证数据
-  if (user.account.length < 1 || user.password.length < 1) {
+  if(user.account.length<1 || user.password.length<1){
     // 错误提示
     console.log("错了哦，用户名或密码不能为空！");
     ElMessage.error("错了哦，用户名或密码不能为空！");
-    return;
+    return ;
   }
 
   // 登录请求处理
-  user.login(
-      {
-        ticket: res.ticket,
-        randstr: res.randstr,
-      }
-  ).then(response => {
-    // 保存token，并根据用户的选择，是否记住密码
+  user.login({
+    ticket: res.ticket,
+    randstr: res.randstr,
+  }).then(response=>{
+    // 先删除之前存留的状态
     localStorage.removeItem("token");
     sessionStorage.removeItem("token");
-    // console.log(response.data.token);
-    if (user.remember) { // 判断是否记住登录状态
-      // 记住登录
-      localStorage.setItem("token", response.data.token);
-      console.log("已写入 localStorage");
-    } else {
-      // 不记住登录，关闭浏览器以后就删除状态
-      sessionStorage.setItem("token", response.data.token);
-      console.log("已写入 sessionStorage");
+    // 根据用户选择是否记住登录密码，保存token到不同的本地存储中
+    if(user.remember){
+      // 记录登录状态
+      localStorage.token = response.data.token
+    }else{
+      // 不记录登录状态
+      sessionStorage.token = response.data.token
     }
-
-    // vuex存储用户登录信息，保存token，并根据用户的选择，是否记住密码
-    let payload = response.data.token.split(".")[1]  // 载荷
-    let payload_data = JSON.parse(atob(payload)) // 用户信息
-    console.log(payload_data)
-    store.commit("login", payload_data)
-
-
-    // 成功提示
-    console.log("登录成功！");
     ElMessage.success("登录成功！");
+    // 登录后续处理，通知父组件，当前用户已经登录成功
     user.account = ""
     user.password = ""
     user.mobile = ""
     user.code = ""
     user.remember = false
+
+    // vuex存储用户登录信息，保存token，并根据用户的选择，是否记住密码
+    let payload = response.data.token.split(".")[1]  // 载荷
+    let payload_data = JSON.parse(atob(payload)) // 用户信息
+    console.log("payload_data=", payload_data)
+    store.commit("login", payload_data)
+
     emit("successhandle")
-  }).catch(error => {
+  }).catch(error=>{
     ElMessage.error("登录失败！");
   })
 }
-</script>
 
+</script>
 <style scoped>
 .title {
   font-size: 20px;
