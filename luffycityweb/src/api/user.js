@@ -11,6 +11,8 @@ const user = reactive({
     login(res){
         // 用户登录
         return http.post("/users/login/", {
+            "ticket": res.ticket,
+            "randstr": res.randstr,
             "username": this.account,
             "password": this.password,
         })
