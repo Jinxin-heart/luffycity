@@ -1,16 +1,17 @@
 import re, constants
 from rest_framework import serializers
 from rest_framework_jwt.settings import api_settings
-from tencentcloudapi import TencentCloudAPI, TencentCloudSDKException
 from .models import User
+from tencentcloudapi import TencentCloudAPI, TencentCloudSDKException
+from django_redis import get_redis_connection
 
 
 class UserRegisterModelSerializer(serializers.ModelSerializer):
     """
     用户注册的序列化器
     """
-    re_password = serializers.CharField(required=True, write_only=True)
-    sms_code = serializers.CharField(min_length=4, max_length=6, required=True, write_only=True)
+    re_password = serializers.CharField(required=True, write_only=True, help_text="确认密码")
+    sms_code = serializers.CharField(min_length=4, max_length=6, required=True, write_only=True, help_text="短信验证码")
     token = serializers.CharField(read_only=True)
     ticket = serializers.CharField(required=True, write_only=True, help_text="滑块验证码的临时凭证")
     randstr = serializers.CharField(required=True, write_only=True, help_text="滑块验证码的随机字符串")
@@ -32,7 +33,7 @@ class UserRegisterModelSerializer(serializers.ModelSerializer):
         # 手机号格式验证
         mobile = data.get("mobile", None)
         if not re.match("^1[3-9]\d{9}$", mobile):
-            raise serializers.ValidationError(detail="手机号格式不正确！",code="mobile")
+            raise serializers.ValidationError(detail="手机号格式不正确！", code="mobile")
 
         # 密码和确认密码
         password = data.get("password")
@@ -57,7 +58,21 @@ class UserRegisterModelSerializer(serializers.ModelSerializer):
 
         if not result:
             raise serializers.ValidationError(detail="滑块验证码校验失败！")
+
         # 验证短信验证码
+        # 从redis中提取短信
+        redis = get_redis_connection("sms_code")
+        code = redis.get(f"sms_{mobile}")
+        if code is None:
+            """获取不到验证码，则表示验证码已经过期了"""
+            raise serializers.ValidationError(detail="验证码失效或已过期！", code="sms_code")
+
+        # 从redis提取的数据，字符串都是bytes类型，所以decode
+        if code.decode() != data.get("sms_code"):
+            raise serializers.ValidationError(detail="短信验证码错误！", code="sms_code")
+        print(f"code={code.decode()}, sms_code={data.get('sms_code')}")
+        # 删除掉redis中的短信，后续不管用户是否注册成功，至少当前这条短信验证码已经没有用处了
+        redis.delete(f"sms_{mobile}")
 
         return data
 
@@ -81,3 +96,4 @@ class UserRegisterModelSerializer(serializers.ModelSerializer):
         user.token = jwt_encode_handler(payload)
 
         return user
+
