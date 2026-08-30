@@ -1,4 +1,5 @@
-luffycityapi/luffycityapi/settings/dev.py
+luffycityapi/luffycityapi/settings/
+email_verification
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
