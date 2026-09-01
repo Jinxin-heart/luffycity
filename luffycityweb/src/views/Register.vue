@@ -12,7 +12,7 @@ const store = useStore()
 
 // 监听数据mobile是否发生变化
 watch(()=>user.mobile, (mobile, prevMobile) => {
-  if(/1[3-9]\d{9}/.test(user.mobile)){
+  if(/1[1-9]\d{9}/.test(user.mobile)){
     // 发送ajax验证手机号是否已经注册
     user.check_mobile().catch(error=>{
       ElMessage.error(error.response.data.errmsg);
@@ -38,7 +38,7 @@ const registerhandler = (res)=> {
   console.log('mobile值:', JSON.stringify(user.mobile), '类型:', typeof user.mobile)
 
   // 注册处理
-  if (!/^1[3-9]\d{9}$/.test(user.mobile)) {
+  if (!/^1[1-9]\d{9}$/.test(user.mobile)) {
     // 错误提示
     ElMessage.error('错了哦，手机号格式不正确！');
     return false // 阻止代码继续往下执行
@@ -86,7 +86,7 @@ const registerhandler = (res)=> {
 
 // 发送短信
 const send_sms = ()=> {
-  if (!/1[3-9]\d{9}/.test(user.mobile)) {
+  if (!/1[1-9]\d{9}/.test(user.mobile)) {
     ElMessage.error("手机号格式有误！")
     return false
   }
