@@ -58,11 +58,11 @@
         <div class="main-wrap">
             <div class="filter clearfix">
                 <div class="sort l">
-                  <a href="" class="on">最新</a>
-                  <a href="">销量</a>
-                  <a href="">升级</a>
+                  <a href="" :class="{on:course.ordering==='-id'}" @click.prevent.stop="course.ordering=(course.ordering==='-id'?'':'-id')">最新</a>
+                  <a href="" :class="{on:course.ordering==='-students'}" @click.prevent.stop="course.ordering=(course.ordering==='-students'?'':'-students')">销量</a>
+                  <a href="" :class="{on:course.ordering==='-orders'}" @click.prevent.stop="course.ordering=(course.ordering==='-orders'?'':'-orders')">推荐</a>
                 </div>
-                <div class="other r clearfix"><a class="course-line l" href="" target="_blank">学习路线</a></div>
+              <div class="other r clearfix"><a class="course-line l" href="" target="_blank">学习路线</a></div>
             </div>
             <ul class="course-list clearfix">
               <li class="course-card" v-for="course_info in course.course_list">
@@ -191,6 +191,8 @@ watch(
     // 监听当前学习方向，在改变时，更新对应方向下的课程分类与课程信息
     ()=> course.current_direction,
     ()=>{
+        // 重置排序条件
+        course.ordering = "-id";
         // 重置当前选中的课程分类
         course.current_category=0;
         get_category();
@@ -201,6 +203,16 @@ watch(
 watch(
     // 监听切换不同的课程分类，在改变时，更新对应分类下的课程信息
     ()=> course.current_category,
+    ()=>{
+        // 重置排序条件
+        course.ordering = "-id";
+        get_course_list();
+    }
+)
+
+watch(
+    // 监听课程切换不同的排序条件
+    ()=>course.ordering,
     ()=>{
         get_course_list();
     }
