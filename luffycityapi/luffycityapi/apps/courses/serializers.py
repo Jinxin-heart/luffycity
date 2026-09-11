@@ -38,6 +38,6 @@ class  CourseIndexHaystackSerializer(HaystackSerializer):
         """用于指定返回数据的字段的"""
         # 课程的图片，在这里通过elasticsearch提供的，所以不会提供图片地址左边的域名的。因此在这里手动拼接
         # instance.course_cover = f'//{settings.OSS_BUCKET_NAME}.{settings.OSS_ENDPOINT}/uploads/{instance.course_cover}'
-        instance.course_cover = f'{settings.MEDIA_URL}{instance.course_cover}'
+        instance.course_cover = f'{settings.BASE_URL}{settings.MEDIA_URL}{instance.course_cover}'
         return super().to_representation(instance)
 
