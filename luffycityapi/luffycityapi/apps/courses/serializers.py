@@ -68,3 +68,11 @@ class CourseRetrieveModelSerializer(serializers.ModelSerializer):
             "lessons", "pub_lessons", "price", "direction", "direction_name", "category", "category_name", "teacher"
         ]
 
+
+from .models import CourseChapter
+class CourseChapterModelSerializer(serializers.ModelSerializer):
+    """课程章节序列化器"""
+    class Meta:
+        model = CourseChapter
+        fields = ["id", "orders", "name", "summary", "get_lesson_list"]
+

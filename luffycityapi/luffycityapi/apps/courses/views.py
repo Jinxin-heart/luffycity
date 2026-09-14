@@ -126,3 +126,20 @@ class CourseRetrieveAPIView(RetrieveAPIView):
     queryset = Course.objects.filter(is_show=True, is_deleted=False).all()
     serializer_class = CourseRetrieveModelSerializer
 
+
+from .models import CourseChapter
+from .serializers import CourseChapterModelSerializer
+
+
+class CourseChapterListAPIView(ListAPIView):
+    """课程章节列表"""
+    serializer_class = CourseChapterModelSerializer
+    def get_queryset(self):
+        """列表页数据"""
+        course = int(self.kwargs.get("course", 0))
+        try:
+            ret = Course.objects.filter(pk=course).all()
+        except:
+            return []
+        queryset = CourseChapter.objects.filter(course=course,is_show=True, is_deleted=False).order_by("orders", "id")
+        return queryset.all()
