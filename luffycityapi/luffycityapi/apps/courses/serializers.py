@@ -65,7 +65,7 @@ class CourseRetrieveModelSerializer(serializers.ModelSerializer):
         fields = [
             "name", "course_cover", "course_video", "level", "get_level_display",
             "description", "pub_date", "status", "get_status_display", "students","discount",
-            "lessons", "pub_lessons", "price", "direction", "direction_name", "category", "category_name", "teacher"
+            "lessons", "pub_lessons", "price", "direction", "direction_name", "category", "category_name", "teacher", "can_free_study"
         ]
 
 
@@ -75,4 +75,5 @@ class CourseChapterModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = CourseChapter
         fields = ["id", "orders", "name", "summary", "get_lesson_list"]
+
 

@@ -24,6 +24,7 @@ const course = reactive({
         }
     },
     tabIndex: 1,      // 课程详情页中默认展示的课程信息的选项卡
+    chapter_list: [], // 课程章节列表
     get_hot_word(){
     // 课程热搜关键字
         return http.get("/courses/hot_word")
@@ -80,6 +81,10 @@ const course = reactive({
     get_course(){
         return http.get(`/courses/${this.course_id}`)
     },
+    get_course_chapters(){
+        // 获取指定课程的章节列表
+        return http.get(`/courses/${this.course_id}/chapters`)
+    }
 })
 
 export default course;
