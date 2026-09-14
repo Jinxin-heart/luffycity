@@ -41,3 +41,30 @@ class  CourseIndexHaystackSerializer(HaystackSerializer):
         instance.course_cover = f'{settings.BASE_URL}{settings.MEDIA_URL}{instance.course_cover}'
         return super().to_representation(instance)
 
+from .models import Teacher
+
+
+class CourseTeachModelSerializer(serializers.ModelSerializer):
+    """课程老师信息"""
+
+    class Meta:
+        model = Teacher
+        fields = ["id", "name", "avatar", "role", "get_role_display", "title", "signature", "brief"]
+
+
+class CourseRetrieveModelSerializer(serializers.ModelSerializer):
+    """课程详情的序列化器"""
+    direction_name = serializers.CharField(source="direction.name")
+    # direction = serializers.SlugRelatedField(read_only=True, slug_field='name')
+    category_name = serializers.CharField(source="category.name")
+    # 序列化器嵌套
+    teacher = CourseTeachModelSerializer()
+
+    class Meta:
+        model = Course
+        fields = [
+            "name", "course_cover", "course_video", "level", "get_level_display",
+            "description", "pub_date", "status", "get_status_display", "students","discount",
+            "lessons", "pub_lessons", "price", "direction", "direction_name", "category", "category_name", "teacher"
+        ]
+

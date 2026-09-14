@@ -114,3 +114,15 @@ class HotWordAPIView(APIView):
         # 按分数store进行倒序显示排名靠前的指定数量的热词
         word_list = redis.zrevrange(constants.DEFAULT_HOT_WORD, 0, constants.HOT_WORD_LENGTH - 1)
         return Response(word_list)
+
+
+from rest_framework.generics import RetrieveAPIView
+from .models import Course
+from .serializers import CourseRetrieveModelSerializer
+
+
+class CourseRetrieveAPIView(RetrieveAPIView):
+    """课程详情信息"""
+    queryset = Course.objects.filter(is_show=True, is_deleted=False).all()
+    serializer_class = CourseRetrieveModelSerializer
+
