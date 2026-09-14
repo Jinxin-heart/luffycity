@@ -16,6 +16,14 @@ const course = reactive({
     timer: 0,      // 课程相关数据的定时器
     text: "",
     hot_word_list: [],// 热搜词列表
+    course_id: null,  // 课程ID
+    info: {           // 课程详情信息
+        teacher:{},   // 课程相关的老师信息
+        discount:{    // 课程相关的折扣信息
+          type: ""
+        }
+    },
+    tabIndex: 1,      // 课程详情页中默认展示的课程信息的选项卡
     get_hot_word(){
     // 课程热搜关键字
         return http.get("/courses/hot_word")
@@ -68,7 +76,10 @@ const course = reactive({
             return http.get(`/courses/search`, {
                 params,
             })
-        }
+        },
+    get_course(){
+        return http.get(`/courses/${this.course_id}`)
+    },
 })
 
 export default course;
